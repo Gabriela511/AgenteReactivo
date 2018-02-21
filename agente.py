@@ -1,14 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-# Escrito por Daniel Fuentes B.
-# Licencia: X11/MIT license http://www.opensource.org/licenses/mit-license.php
-# https://www.pythonmania.net/es/2010/03/25/tutorial-pygame-2-ventana-e-imagenes/
-
-# ---------------------------
-# Importacion de los módulos
-# ---------------------------
-
 import pygame
 from pygame.locals import *
 from random import randint, uniform, random
@@ -36,36 +25,39 @@ def main():
     pygame.init()
     # creamos la ventana y le indicamos un titulo:
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    pygame.display.set_caption("tutorial pygame parte 2")
+    pygame.display.set_caption("Agente Reactivo")
 
     # cargamos el fondo y una imagen (se crea objetos "Surface")
     fondo = pygame.image.load("fondo.jpg").convert()
-    tux = pygame.image.load("tux.png").convert_alpha()
+    tux = pygame.image.load("Imagenes/gato.png").convert_alpha()
+    raton = pygame.image.load("Imagenes/raton.png").convert_alpha()
 
     tux_pos_x = 550
     tux_pos_y = 200
-
+    raton_pos_x=randint(60,500)
+    raton_pos_y=randint(60,400)
     # Indicamos la posicion de las "Surface" sobre la ventana
     screen.blit(fondo, (0, 0))
     screen.blit(tux, (0, 0))
+    screen.blit(raton, (0,0))
     # se muestran lo cambios en pantalla
     pygame.display.flip()
 
     # el bucle principal del juego
     while True:
-
+    	
         # le restamos 1 a la coordenada x de tux
         # asi se mueve un poquito a la izquierda
         p = randint(1,4)
 
         if p == 1:
-            tux_pos_x = tux_pos_x - 90
+            tux_pos_x = tux_pos_x - 60
         elif p == 2:
-            tux_pos_y = tux_pos_y - 90
+            tux_pos_y = tux_pos_y - 60
         elif p == 3:
-            tux_pos_x = tux_pos_x + 90
+            tux_pos_x = tux_pos_x + 60
         else:
-            tux_pos_y = tux_pos_y + 90
+            tux_pos_y = tux_pos_y + 60
 
         if tux_pos_x < 1:
             tux_pos_x = 550
@@ -81,6 +73,9 @@ def main():
 
         screen.blit(fondo,(0,0))
         screen.blit(tux, (tux_pos_x, tux_pos_y))
+        screen.blit(raton, (raton_pos_x, raton_pos_y))
+        screen.blit(raton, (raton_pos_x+60, raton_pos_y+60))
+        screen.blit(raton, (raton_pos_x-60, raton_pos_y-60))
         # se muestran lo cambios en pantalla
         pygame.display.flip()
 
