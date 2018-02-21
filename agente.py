@@ -8,8 +8,8 @@ import time
 # Constantes
 # -----------
 
-SCREEN_WIDTH = 640
-SCREEN_HEIGHT = 480
+SCREEN_WIDTH = 720
+SCREEN_HEIGHT = 540
 
 # ------------------------------
 # Clases y Funciones utilizadas
@@ -32,10 +32,13 @@ def main():
     tux = pygame.image.load("Imagenes/gato.png").convert_alpha()
     raton = pygame.image.load("Imagenes/raton.png").convert_alpha()
 
-    tux_pos_x = 550
-    tux_pos_y = 200
-    raton_pos_x=randint(60,500)
-    raton_pos_y=randint(60,400)
+    tux_pos_x = 0
+    tux_pos_y = 0
+    raton_pos_x=randint(0, 11)
+    raton_pos_y=randint(0, 9)
+
+    raton_pos_x = raton_pos_x * 60
+    raton_pos_y = raton_pos_y * 60
     # Indicamos la posicion de las "Surface" sobre la ventana
     screen.blit(fondo, (0, 0))
     screen.blit(tux, (0, 0))
@@ -59,16 +62,16 @@ def main():
         else:
             tux_pos_y = tux_pos_y + 60
 
-        if tux_pos_x < 1:
-            tux_pos_x = 550
+        if tux_pos_x < 0:
+            tux_pos_x = 660
 
-        if tux_pos_x >= 640:
+        if tux_pos_x > 660:
             tux_pos_x = 0
 
-        if tux_pos_y < 1:
-            tux_pos_y = 390
+        if tux_pos_y < 0:
+            tux_pos_y = 480
 
-        if tux_pos_y >= 480:
+        if tux_pos_y > 480:
             tux_pos_y = 0
 
         screen.blit(fondo,(0,0))
@@ -79,7 +82,7 @@ def main():
         # se muestran lo cambios en pantalla
         pygame.display.flip()
 
-        time.sleep(1)
+        time.sleep(0.5)
 
         # Posibles entradas del teclado y mouse
         for event in pygame.event.get():
