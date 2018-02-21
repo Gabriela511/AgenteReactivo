@@ -11,7 +11,9 @@
 
 import pygame
 from pygame.locals import *
+from random import randint, uniform, random
 import sys
+import time
 
 # -----------
 # Constantes
@@ -40,14 +42,50 @@ def main():
     fondo = pygame.image.load("fondo.jpg").convert()
     tux = pygame.image.load("tux.png").convert_alpha()
 
+    tux_pos_x = 550
+    tux_pos_y = 200
+
     # Indicamos la posicion de las "Surface" sobre la ventana
     screen.blit(fondo, (0, 0))
-    screen.blit(tux, (550, 200))
+    screen.blit(tux, (0, 0))
     # se muestran lo cambios en pantalla
     pygame.display.flip()
 
     # el bucle principal del juego
     while True:
+
+        # le restamos 1 a la coordenada x de tux
+        # asi se mueve un poquito a la izquierda
+        p = randint(1,4)
+
+        if p == 1:
+            tux_pos_x = tux_pos_x - 90
+        elif p == 2:
+            tux_pos_y = tux_pos_y - 90
+        elif p == 3:
+            tux_pos_x = tux_pos_x + 90
+        else:
+            tux_pos_y = tux_pos_y + 90
+
+        if tux_pos_x < 1:
+            tux_pos_x = 550
+
+        if tux_pos_x >= 640:
+            tux_pos_x = 0
+
+        if tux_pos_y < 1:
+            tux_pos_y = 390
+
+        if tux_pos_y >= 480:
+            tux_pos_y = 0
+
+        screen.blit(fondo,(0,0))
+        screen.blit(tux, (tux_pos_x, tux_pos_y))
+        # se muestran lo cambios en pantalla
+        pygame.display.flip()
+
+        time.sleep(2)
+
         # Posibles entradas del teclado y mouse
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
