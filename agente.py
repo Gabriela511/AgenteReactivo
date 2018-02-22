@@ -4,6 +4,7 @@ from random import randint, uniform, random
 from numpy import *
 import sys
 import time
+import os
 
 # -----------
 # Constantes
@@ -11,10 +12,48 @@ import time
 
 SCREEN_WIDTH = 720
 SCREEN_HEIGHT = 540
+IMG_DIR = "Imagenes"
 
 # ------------------------------
 # Clases y Funciones utilizadas
 # ------------------------------
+
+def load_image(nombre, dir_imagen, alpha=False):
+    # Encontramos la ruta completa de la imagen
+    ruta = os.path.join(dir_imagen, nombre)
+    try:
+        image = pygame.image.load(ruta)
+    except:
+        print("Error, no se puede cargar la imagen: " + ruta)
+        sys.exit(1)
+    # Comprobar si la imagen tiene "canal alpha" (como los png)
+    if alpha is True:
+        image = image.convert_alpha()
+    else:
+        image = image.convert()
+    return image
+
+
+class Gato(pygame.sprite.Sprite):
+    "El gato y su comportamiento en la pantalla"
+
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = load_image("gato.png", IMG_DIR, alpha=True)
+        self.rect = self.image.get_rect()
+        self.rect.centerx = SCREEN_WIDTH / 2
+        self.rect.centery = SCREEN_HEIGHT / 2
+
+
+class Raton(pygame.sprite.Sprite):
+    "El raton y su comportamiento en la pantalla"
+
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = load_image("raton.png", IMG_DIR, alpha=True)
+        self.rect = self.image.get_rect()
+        self.rect.centerx = SCREEN_WIDTH / 2
+        self.rect.centery = SCREEN_HEIGHT / 2
 
 
 # ------------------------------
@@ -29,14 +68,17 @@ def main():
     pygame.display.set_caption("Agente Reactivo")
 
     # cargamos el fondo y una imagen (se crea objetos "Surface")
-    fondo = pygame.image.load("fondo.jpg").convert()
-    tux = pygame.image.load("Imagenes/gato.png").convert_alpha()
-    raton = pygame.image.load("Imagenes/raton.png").convert_alpha()
+    fondo = load_image("fondo.jpg", IMG_DIR, alpha = False)
+    casa = pygame.image.load("Imagenes/caja.png").convert_alpha()
+    gato = Gato()
+    raton = Raton()
 
-    tux_pos_x = 0
-    tux_pos_y = 0
-    raton_pos_x=randint(0, 11)
-    raton_pos_y=randint(0, 9)
+    tux_pos_x = randint(0, 10) * 60
+    tux_pos_y = randint(0, 8) * 60
+    casa_pos_x = tux_pos_x
+    casa_pos_y = tux_pos_y
+    raton_pos_x=randint(0, 10)
+    raton_pos_y=randint(0, 8)
 
     ratones = randint(1, 5)
 
@@ -46,16 +88,17 @@ def main():
     i = 0
 
     for i in range(0, ratones):
-    	arreglo_pos_x[i] = randint(0, 11) * 60
-    	arreglo_pos_y[i] = randint(0, 9) * 60
+    	arreglo_pos_x[i] = randint(0, 10) * 60
+    	arreglo_pos_y[i] = randint(0, 8) * 60
     	i += 1
 
     raton_pos_x = raton_pos_x * 60
     raton_pos_y = raton_pos_y * 60
     # Indicamos la posicion de las "Surface" sobre la ventana
     screen.blit(fondo, (0, 0))
-    screen.blit(tux, (0, 0))
-    screen.blit(raton, (0,0))
+    screen.blit(gato.image, (tux_pos_x, tux_pos_y))
+    screen.blit(casa, (casa_pos_x, casa_pos_y))
+    screen.blit(raton.image, (0,0))
     # se muestran lo cambios en pantalla
     pygame.display.flip()
 
@@ -69,7 +112,7 @@ def main():
         if p == 1:
             tux_pos_x = tux_pos_x - 60
         elif p == 2:
-            tux_pos_y = tux_pos_y - 60
+           tux_pos_y = tux_pos_y - 60
         elif p == 3:
             tux_pos_x = tux_pos_x + 60
         else:
@@ -87,13 +130,17 @@ def main():
         if tux_pos_y > 480:
             tux_pos_y = 0
 
+        gato.update()
         screen.blit(fondo,(0,0))
-        screen.blit(tux, (tux_pos_x, tux_pos_y))
+#        screen.blit(gato.image, gato.speed)
+        screen.blit(gato.image, (tux_pos_x, tux_pos_y))
+        screen.blit(casa, (casa_pos_x, casa_pos_y))
+
 
         i = 0
         
         for i in range(0, ratones):
-        	screen.blit(raton, (arreglo_pos_x[i], arreglo_pos_y[i]))
+        	screen.blit(raton.image, (arreglo_pos_x[i], arreglo_pos_y[i]))
         	i += 1
 
         #screen.blit(raton, (raton_pos_x, raton_pos_y))
