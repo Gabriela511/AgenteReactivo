@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 from random import randint, uniform, random
+from numpy import *
 import sys
 import time
 
@@ -36,6 +37,18 @@ def main():
     tux_pos_y = 0
     raton_pos_x=randint(0, 11)
     raton_pos_y=randint(0, 9)
+
+    ratones = randint(1, 5)
+
+    arreglo_pos_x = zeros(ratones)
+    arreglo_pos_y = zeros(ratones)
+
+    i = 0
+
+    for i in range(0, ratones):
+    	arreglo_pos_x[i] = randint(0, 11) * 60
+    	arreglo_pos_y[i] = randint(0, 9) * 60
+    	i += 1
 
     raton_pos_x = raton_pos_x * 60
     raton_pos_y = raton_pos_y * 60
@@ -76,9 +89,17 @@ def main():
 
         screen.blit(fondo,(0,0))
         screen.blit(tux, (tux_pos_x, tux_pos_y))
-        screen.blit(raton, (raton_pos_x, raton_pos_y))
-        screen.blit(raton, (raton_pos_x+60, raton_pos_y+60))
-        screen.blit(raton, (raton_pos_x-60, raton_pos_y-60))
+
+        i = 0
+        
+        for i in range(0, ratones):
+        	screen.blit(raton, (arreglo_pos_x[i], arreglo_pos_y[i]))
+        	i += 1
+
+        #screen.blit(raton, (raton_pos_x, raton_pos_y))
+        #screen.blit(raton, (raton_pos_x+60, raton_pos_y+60))
+        #screen.blit(raton, (raton_pos_x-60, raton_pos_y-60))
+
         # se muestran lo cambios en pantalla
         pygame.display.flip()
 
