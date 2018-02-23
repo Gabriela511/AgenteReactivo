@@ -123,14 +123,12 @@ def main():
     obstaculos_pos_x = zeros(perros)
     obstaculos_pos_y = zeros(perros)
 
-    arreglo_pos_x = zeros(ratones)
-    arreglo_pos_y = zeros(ratones)
+    arreglo_pos_x = zeros(ratones)      #Arreglo RATON X
+    arreglo_pos_y = zeros(ratones)      #Arreglo RATON Y
 
     i = 0
 
-    for i in range(0, ratones):
-
-#        while arreglo_pos_x[i] != casa_pos_x and arreglo_pos_y[i] != casa_pos_y:
+    for i in range(0, ratones):         #genera ratones
         arreglo_pos_x[i] = randint(0, 10) * 60
         arreglo_pos_y[i] = randint(0, 8) * 60
 
@@ -138,9 +136,7 @@ def main():
 
 
     i = 0
-    for i in range(0, perros):
-
-#        while arreglo_pos_x[i] != casa_pos_x and arreglo_pos_y[i] != casa_pos_y:
+    for i in range(0, perros):          #genera perros
         obstaculos_pos_x[i] = randint(0, 10) * 60
         obstaculos_pos_y[i] = randint(0, 8) * 60
         if obstaculos_pos_y[i] == casa_pos_y and obstaculos_pos_x[i] == casa_pos_x:
@@ -169,7 +165,7 @@ def main():
 
         ob = 0
 
-        if x == 0:
+        if x == 0:         # MIENTRAS SEA NO RECOGA NINGUNA MUESTRA EL GATO SE MUEVE
             if p == 1:
                 tux_pos_x = tux_pos_x - 60
             elif p == 2:
@@ -197,7 +193,7 @@ def main():
 
             while co != 0:
                 r = 0
-                for r in range(0, perros):
+                for r in range(0, perros):          #Si hay obstaculo, regresa 
                     if gato.posicion[0] == obstaculos_pos_x[r] and gato.posicion[1] == obstaculos_pos_y[r] or gato.posicion[0] == obstaculos_pos_x[r] and gato.posicion[1] == obstaculos_pos_y[r] or gato.posicion[1] == obstaculos_pos_y[r] and gato.posicion[0] == obstaculos_pos_x[r] or gato.posicion[1] == obstaculos_pos_y[r] and gato.posicion[0] == obstaculos_pos_x[r]:
                         gato.regresa(p)
                         p = randint(1,4)
@@ -205,10 +201,10 @@ def main():
                         co = 1
                         break
                     else:
-                        co = 0
+                        co = 0              #Sigue caminando 
 
-            r = 0
-            for r in range(0, ratones):
+            r = 0       
+            for r in range(0, ratones):     #Si hay ratones, debemos recogerlos
                 if gato.posicion[0] - 60 == arreglo_pos_x[r] and gato.posicion[1] == arreglo_pos_y[r] or gato.posicion[0] + 60 == arreglo_pos_x[r] and gato.posicion[1] == arreglo_pos_y[r] or gato.posicion[1] - 60 == arreglo_pos_y[r] and gato.posicion[0] == arreglo_pos_x[r] or gato.posicion[1] + 60 == arreglo_pos_y[r] and gato.posicion[0] == arreglo_pos_x[r]:
                     arreglo_pos_x[r] = -60
                     arreglo_pos_y[r] = -60
@@ -216,13 +212,13 @@ def main():
                     break
 
 
-        else:
+        else:           #TOMA MUESTRA Y RETORNA A CASA
             if gato.posicion[0] != casa_pos_x and ob == 0:
                 if gato.posicion[0] > casa_pos_x:
                     gato.posicion[0] -= 60
                     co = 1
 
-                    while co != 0:
+                    while co != 0:          #ESQUIVA OBSTACULOS
                         r = 0
                         for r in range(0, perros):
                             if gato.posicion[0] == obstaculos_pos_x[r] and gato.posicion[1] == obstaculos_pos_y[r] or gato.posicion[0] == obstaculos_pos_x[r] and gato.posicion[1] == obstaculos_pos_y[r] or gato.posicion[1] == obstaculos_pos_y[r] and gato.posicion[0] == obstaculos_pos_x[r] or gato.posicion[1] == obstaculos_pos_y[r] and gato.posicion[0] == obstaculos_pos_x[r]:
@@ -292,21 +288,21 @@ def main():
             if gato.posicion[1] == casa_pos_y and gato.posicion[0] == casa_pos_x:
                 x = 0
                 conteo -= 1
-
-        screen.blit(fondo,(0,0))
+                #se redibuja el escenario
+        screen.blit(fondo,(0,0))                
         screen.blit(gato.image, gato.posicion)
         screen.blit(casa, (casa_pos_x, casa_pos_y))
 
 
         i = 0
             
-        for i in range(0, ratones):
+        for i in range(0, ratones):             #Se re dibujan los ratones
             screen.blit(raton.image, (arreglo_pos_x[i], arreglo_pos_y[i]))
             i += 1
 
         i = 0
             
-        for i in range(0, perros):
+        for i in range(0, perros):          #se redibujan los perros
             screen.blit(perro, (obstaculos_pos_x[i], obstaculos_pos_y[i]))
             i += 1
 
